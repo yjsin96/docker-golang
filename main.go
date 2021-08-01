@@ -1,6 +1,19 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"docker-test/db"
+	"docker-test/file"
+	"io/ioutil"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+)
+
+func init() {
+	godotenv.Load()
+	db.Setup()
+	file.Setup()
+}
 
 func main() {
 	r := gin.Default()
@@ -9,5 +22,39 @@ func main() {
 		c.JSON(200, gin.H{"message": "pong"})
 	})
 
-	r.Run("	:8000")
+	r.GET("/db/:data", func(c *gin.Context) {
+		data := c.Param("data")
+
+		_, err := db.AddTest(data)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "error", "error": err.Error()})
+			return
+		}
+
+		c.JSON(200, gin.H{"message": "success"})
+	})
+
+	r.GET("/file/get", func(c *gin.Context) {
+		b, err := ioutil.ReadFile("./storage/test.txt")
+		if err != nil {
+			c.JSON(400, gin.H{"message": "error", "error": err.Error()})
+			return
+		}
+
+		c.JSON(200, gin.H{"message": "success", "data": string(b)})
+	})
+
+	r.GET("/file/write/:data", func(c *gin.Context) {
+		data := c.Param("data")
+
+		err := ioutil.WriteFile("./storage/test.txt", []byte(data), 0644)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "error", "error": err.Error()})
+			return
+		}
+
+		c.JSON(200, gin.H{"message": "success"})
+	})
+
+	r.Run(":8000")
 }
