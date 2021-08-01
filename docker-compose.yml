@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  app:
+    image: go-example
+    container_name: go-exmaple
+    command: ./test-golang
+    ports:
+      - 8000:8000
+    working_dir: /app
+    volumes:
+      - ./storage:/app/storage
+    environment:
+      DB_USER: root
+      DB_HOST: host.docker.internal:3306
+      DB_NAME: docker_test
