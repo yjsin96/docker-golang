@@ -32,12 +32,14 @@ func Setup() {
 	db, err = gorm.Open(mysql.Open(config), gormConfig)
 
 	if err != nil {
-		log.Fatalf("models.Setup err: %v", err)
+		log.Printf("models.Setup err: %v", err)
+		return
 	}
 
 	sqlDB, err := db.DB()
 	if err != nil {
-		log.Fatalf("get db error: %v", err)
+		log.Printf("get db error: %v", err)
+		return
 	}
 
 	sqlDB.SetMaxIdleConns(10)
@@ -45,7 +47,8 @@ func Setup() {
 
 	err = db.Exec("CREATE TABLE IF NOT EXISTS `test` (`id` int(11) NOT NULL AUTO_INCREMENT,`data` text NOT NULL,`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;").Error
 	if err != nil {
-		log.Fatalf("craete mysql table error: %v", err)
+		log.Printf("craete mysql table error: %v", err)
+		return
 	}
 
 }
