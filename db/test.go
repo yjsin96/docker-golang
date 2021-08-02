@@ -18,3 +18,14 @@ func AddTest(data string) (*Test, error) {
 
 	return &test, nil
 }
+
+// GetTest get test data
+func GetTest() ([]*Test, error) {
+	var test []*Test
+
+	if err := db.Find(&test).Error; err != nil {
+		return nil, err
+	}
+
+	return test, nil
+}

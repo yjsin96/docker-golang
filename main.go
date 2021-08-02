@@ -22,7 +22,7 @@ func main() {
 		c.JSON(200, gin.H{"message": "pong"})
 	})
 
-	r.GET("/db", func(c *gin.Context) {
+	r.GET("/db/add", func(c *gin.Context) {
 		data := c.Query("data")
 
 		_, err := db.AddTest(data)
@@ -32,6 +32,17 @@ func main() {
 		}
 
 		c.JSON(200, gin.H{"message": "success"})
+	})
+
+	r.GET("/db/get", func(c *gin.Context) {
+
+		data, err := db.GetTest()
+		if err != nil {
+			c.JSON(400, gin.H{"message": "error", "error": err.Error()})
+			return
+		}
+
+		c.JSON(200, gin.H{"message": "success", "data": data})
 	})
 
 	r.GET("/file/get", func(c *gin.Context) {
