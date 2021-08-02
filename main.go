@@ -22,8 +22,8 @@ func main() {
 		c.JSON(200, gin.H{"message": "pong"})
 	})
 
-	r.GET("/db/:data", func(c *gin.Context) {
-		data := c.Param("data")
+	r.GET("/db", func(c *gin.Context) {
+		data := c.Query("data")
 
 		_, err := db.AddTest(data)
 		if err != nil {
@@ -44,8 +44,8 @@ func main() {
 		c.JSON(200, gin.H{"message": "success", "data": string(b)})
 	})
 
-	r.GET("/file/write/:data", func(c *gin.Context) {
-		data := c.Param("data")
+	r.GET("/file/write", func(c *gin.Context) {
+		data := c.Query("data")
 
 		err := ioutil.WriteFile("./storage/test.txt", []byte(data), 0644)
 		if err != nil {
