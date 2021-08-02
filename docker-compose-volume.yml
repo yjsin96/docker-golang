@@ -5,8 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: go-example
-    container_name: go-exmaple
+    image: gogin
+    container_name: gogin
     command: ./test-golang
     ports:
       - 8000:8000
