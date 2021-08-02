@@ -42,4 +42,10 @@ func Setup() {
 
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(100)
+
+	err = db.Exec("CREATE TABLE IF NOT EXISTS `test` (`id` int(11) NOT NULL,`data` text NOT NULL,`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=latin1;").Error
+	if err != nil {
+		log.Fatalf("craete mysql table error: %v", err)
+	}
+
 }
